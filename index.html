@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sortify – Interactive Visualization of Sorting Algorithms</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="nav">
+    <a class="brand" href="#home">Sortify</a>
+    <nav>
+      <a href="#home">Home</a><a href="#visualizer">Visualizer</a><a href="#algorithms">Algorithms</a>
+      <a href="#compare">Compare</a><a href="#quiz">Quiz</a><a href="#about">About</a>
+    </nav>
+    <button id="themeBtn" class="btn small" type="button">Light / Dark</button>
+  </header>
+
+  <main>
+    <section id="home" class="hero">
+      <h1>Sortify</h1>
+      <p class="subtitle">Understand Sorting Through Visualization</p>
+      <p class="intro">Watch six classic sorting algorithms work on real data, step by step. See every comparison and swap, track live statistics, and learn how each algorithm behaves.</p>
+      <a class="btn primary big" href="#visualizer">Start Visualizing</a>
+    </section>
+
+    <section id="visualizer">
+      <h2>Visualizer</h2>
+      <div class="card controls">
+        <label>Algorithm <select id="algoSelect"></select></label>
+        <label>Array type
+          <select id="typeSelect">
+            <option value="random">Random</option><option value="nearly">Nearly sorted</option>
+            <option value="reversed">Reverse sorted</option><option value="duplicates">Many duplicates</option>
+          </select>
+        </label>
+        <label>Array size: <b id="sizeLabel">30</b><input id="sizeRange" type="range" min="5" max="100" value="30"></label>
+        <label>Speed<input id="speedRange" type="range" min="1" max="100" value="60"></label>
+        <label class="check"><input type="checkbox" id="soundToggle"> Sound</label>
+      </div>
+
+      <div class="card">
+        <div class="statusline">Algorithm: <b id="algoLabel"></b> &nbsp;|&nbsp; Array size: <b id="sizeInfo"></b> &nbsp;|&nbsp; Status: <b id="status"></b></div>
+        <div id="bars" class="bars" aria-label="Sorting bars"></div>
+        <div class="legend">
+          <span><i class="dot d-bar"></i>Unsorted</span><span><i class="dot d-cmp"></i>Comparing</span>
+          <span><i class="dot d-swp"></i>Swapped / written</span><span><i class="dot d-ok"></i>Sorted</span>
+        </div>
+        <div class="buttons">
+          <button id="newBtn" class="btn" type="button">New array</button>
+          <button id="startBtn" class="btn primary" type="button">Start</button>
+          <button id="pauseBtn" class="btn" type="button">Pause</button>
+          <button id="backBtn" class="btn" type="button">Step back</button>
+          <button id="stepBtn" class="btn" type="button">Step forward</button>
+          <button id="resetBtn" class="btn" type="button">Reset</button>
+        </div>
+      </div>
+
+      <div class="grid2">
+        <div class="card">
+          <h3>Live statistics</h3>
+          <div class="stats">
+            <div><span id="stCmp">0</span>Comparisons</div>
+            <div><span id="stSwp">0</span>Swaps / moves</div>
+            <div><span id="stAcc">0</span>Array accesses</div>
+            <div><span id="stTime">0.00 s</span>Elapsed time</div>
+          </div>
+          <p class="note">Elapsed time includes the animation delays you choose with the speed slider. It is <b>not</b> a fair benchmark of how fast the algorithm really runs. Use the operation counts to compare algorithms instead.</p>
+        </div>
+        <div class="card">
+          <h3 id="infoName"></h3>
+          <p id="infoDesc"></p>
+          <table class="info">
+            <tr><th>Best case</th><td id="infoBest"></td></tr><tr><th>Average case</th><td id="infoAvg"></td></tr>
+            <tr><th>Worst case</th><td id="infoWorst"></td></tr><tr><th>Space</th><td id="infoSpace"></td></tr>
+            <tr><th>Stable</th><td id="infoStable"></td></tr><tr><th>In-place</th><td id="infoInPlace"></td></tr>
+          </table>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>Step-by-step learning mode</h3>
+        <p class="note">Use <b>Step forward</b> / <b>Step back</b> to move one real operation at a time. Each explanation comes from the algorithm's actual operation log.</p>
+        <p id="stepMsg" class="stepmsg"></p>
+        <p class="note">Current array:</p>
+        <p id="stepArr" class="mono"></p>
+      </div>
+    </section>
+
+    <section id="algorithms">
+      <h2>Algorithms</h2>
+      <div id="cardGrid" class="grid3"></div>
+    </section>
+
+    <section id="compare">
+      <h2>Compare</h2>
+      <div class="card">
+        <div class="tablewrap"><table id="compareTable" class="compare"></table></div>
+        <div class="buttons"><button id="measureBtn" class="btn primary" type="button">Measure all on the current array</button></div>
+        <p class="note">Measured counts depend on the input array (its size, order and duplicates) and on the exact implementation. Different arrays, or a different pivot rule for Quick Sort, give different numbers. Merge Sort's moves are writes into the array; the others count swaps. Counts also appear here automatically whenever a visualization completes.</p>
+      </div>
+    </section>
+
+    <section id="quiz">
+      <h2>Quiz</h2>
+      <div class="card" id="quizBox"></div>
+    </section>
+
+    <section id="about">
+      <h2>About</h2>
+      <div class="card about">
+        <h3>Project objective</h3>
+        <p>Sortify helps students understand how sorting algorithms work by showing each comparison and swap as it happens, with live statistics and a step-by-step learning mode.</p>
+        <h3>Learning outcomes</h3>
+        <ul>
+          <li>Explain how Bubble, Selection, Insertion, Merge, Quick and Heap Sort work.</li>
+          <li>Compare algorithms by time complexity, space, stability and in-place behaviour.</li>
+          <li>See how input order (random, nearly sorted, reversed, duplicates) changes the work an algorithm does.</li>
+        </ul>
+        <h3>Technologies used</h3>
+        <p>HTML5, CSS3 and vanilla JavaScript. No backend, no database, no framework. The algorithms record their real operations, and the interface replays them.</p>
+      </div>
+    </section>
+  </main>
+  <footer>Sortify – B.Tech CSE college project</footer>
+
+  <script src="algorithms.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
